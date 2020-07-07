@@ -41,3 +41,5 @@ RESOURCES += \
     resources.qrc
 
 VERSION = 0.1.0.0
+
+RC_ICONS = qtnosleep.ico

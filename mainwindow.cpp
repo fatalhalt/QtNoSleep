@@ -11,12 +11,12 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , startMinimized(false)
     , mySystray(new MySystemTray)
     , noSleep(false)
     , sawTooltipMessage(false)
     , saveSetting(false)
     , runOnStartup(false)
-    , startMinimized(false)
     , startedMinimized(false)
     , ui(new Ui::MainWindow)
 
@@ -342,9 +342,10 @@ void MainWindow::on_actionAbout_triggered()
     about->setWindowTitle("About");
 
     QHBoxLayout *layout = new QHBoxLayout();
-    QLabel *url = new QLabel("github repo: <a href=\"https://github.com/fatalhalt/QtNoSleep\">QtNoSleep</a>", this);
-    url->setOpenExternalLinks(true);
-    layout->addWidget(url);
+    QString labelText = QString("QtNoSleep: v") + QString(PROGRAM_VERSION) + QString(". github repo: <a href=\"https://github.com/fatalhalt/QtNoSleep\">QtNoSleep</a>");
+    QLabel *label = new QLabel(labelText, this);
+    label->setOpenExternalLinks(true);
+    layout->addWidget(label);
     about->setLayout(layout);
 
     about->show();

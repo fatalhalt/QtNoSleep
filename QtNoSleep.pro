@@ -39,3 +39,5 @@ LIBS += -lKernel32
 
 RESOURCES += \
     resources.qrc
+
+VERSION = 0.1.0.0

@@ -33,7 +33,8 @@
   </property>
   <property name="windowIcon">
    <iconset theme=":/icons/sleeping.png">
-    <normaloff>.</normaloff>.</iconset>
+    <normaloff>.</normaloff>
+    <normalon>:/icons/sleeping.png</normalon>.</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="horizontalLayoutWidget">

@@ -13,6 +13,7 @@
 
 #define RAND_STRING_SIZE 1024*1024
 #define RAND_WRITE_FREQUENCY_MS 30000
+#define PROGRAM_VERSION "0.1"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

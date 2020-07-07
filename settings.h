@@ -16,16 +16,18 @@ public:
     explicit MySettings(QWidget *parent = nullptr);
     ~MySettings();
 
-    QCheckBox *getCheckbox(void);
+    QCheckBox *getRunCheckbox(void);
+    QCheckBox *getStartCheckbox(void);
 
 signals:
     void okSettingsDialog();
     void settingsDialogRunCheckbox();
+    void settingsDialogStartMinimizedCheckbox();
 
 private slots:
     void on_mySettingsPushButton_clicked();
-
     void on_mySettingsCheckBox_clicked();
+    void on_mySettingsStartCheckbox_clicked();
 
 private:
     Ui::MySettings *ui;

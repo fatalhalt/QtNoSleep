@@ -32,10 +32,13 @@ public:
     int createNoSleepFile(void);
     int destroyNoSleepFile(void);
 
+    bool startMinimized;
+
 public slots:
     void onTrayIconDoubleClick();
     void onOKSettingsDialog();
     void onSettingsDialogRunCheckbox();
+    void onSettingsDialogStartMinimizedCheckbox();
 
 private slots:
     void on_mypushButton_clicked();
@@ -44,6 +47,7 @@ private slots:
     void onAwakeFileTimeout();
     void onShowWindow();
     void closeEvent(QCloseEvent *);
+    void showEvent(QShowEvent *);
 
     void on_mycomboBox_currentIndexChanged(const QString &arg1);
 
@@ -62,6 +66,7 @@ private:
     bool sawTooltipMessage;
     bool saveSetting;
     bool runOnStartup;
+    bool startedMinimized;
     Ui::MainWindow *ui;
     QString driveToKeepAwake;
     QString status;

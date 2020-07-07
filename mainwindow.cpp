@@ -4,6 +4,7 @@
 #include <QtDebug>
 #include <QTimer>
 #include <QSettings>
+#include <QDesktopWidget>
 #include <random>
 
 #include <Windows.h>
@@ -15,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     , sawTooltipMessage(false)
     , saveSetting(false)
     , runOnStartup(false)
+    , startMinimized(false)
+    , startedMinimized(false)
     , ui(new Ui::MainWindow)
 
 {
@@ -82,6 +85,7 @@ void MainWindow::writeSettings()
     settings.beginGroup("MainWindow");
     settings.setValue("restore", this->saveSetting);
     settings.setValue("drive", this->driveToKeepAwake);
+    settings.setValue("startMinimized", this->startMinimized);
     settings.endGroup();
 }
 
@@ -99,6 +103,7 @@ int MainWindow::readSettings()
         this->driveToKeepAwake = driveToKeepAwake.toString();
         ret = 0;
     }
+    this->startMinimized = settings.value("startMinimized", false).toBool();
     settings.endGroup();
 
     return ret;
@@ -166,6 +171,25 @@ void MainWindow::onShowWindow()
 }
 
 void MainWindow::onTrayIconDoubleClick() {
+#if 0
+    if (this->windowState() == Qt::WindowMinimized) {
+        int w = 320, h = 180;
+        int screenWidth;
+        int screenHeight;
+        int x, y;
+
+        QDesktopWidget *desktop = QApplication::desktop();
+        screenWidth = desktop->width();
+        screenHeight = desktop->height();
+        x = (screenWidth - w) / 2;
+        y = (screenHeight - h) / 2;
+
+        this->setWindowState(Qt::WindowMaximized);
+        this->move(x, y);
+    } else {
+        this->show();
+    }
+#endif
     this->show();
 }
 
@@ -185,6 +209,9 @@ void MainWindow::onSettingsDialogRunCheckbox() {
     this->runOnStartup = !this->runOnStartup;
 }
 
+void MainWindow::onSettingsDialogStartMinimizedCheckbox() {
+    this->startMinimized = !this->startMinimized;
+}
 
 // Override user X'ing out of program, instead put the application into taskbar
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -201,6 +228,22 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 
     event->ignore();
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+# if 0
+    if (this->startMinimized && this->startedMinimized == false) {
+        this->startedMinimized = true;
+        this->sawTooltipMessage = true; // Don't show a notification, be silent
+        this->setWindowState(Qt::WindowMinimized);
+        //this->hide()
+        event->ignore();
+    } else {
+        event->accept();
+    }
+#endif
+    event->accept();
 }
 
 void MainWindow::on_mycomboBox_currentIndexChanged(const QString &arg1)
@@ -276,12 +319,16 @@ void MainWindow::on_actionSettings_triggered()
     dialog->setFixedSize(dialog->size());
 
     if (this->runOnStartup) {
-        dialog->getCheckbox()->setChecked(true);
+        dialog->getRunCheckbox()->setChecked(true);
+    }
+    if (this->startMinimized) {
+        dialog->getStartCheckbox()->setChecked(true);
     }
 
     this->mySettings = dialog;
     connect(this->mySettings, SIGNAL(okSettingsDialog()), this, SLOT(onOKSettingsDialog()));
     connect(this->mySettings, SIGNAL(settingsDialogRunCheckbox()), this, SLOT(onSettingsDialogRunCheckbox()));
+    connect(this->mySettings, SIGNAL(settingsDialogStartMinimizedCheckbox()), this, SLOT(onSettingsDialogStartMinimizedCheckbox()));
 
     dialog->show();
 }

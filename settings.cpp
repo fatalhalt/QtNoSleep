@@ -13,8 +13,12 @@ MySettings::~MySettings()
     delete ui;
 }
 
-QCheckBox *MySettings::getCheckbox(void) {
+QCheckBox *MySettings::getRunCheckbox(void) {
     return ui->mySettingsCheckBox;
+}
+
+QCheckBox *MySettings::getStartCheckbox(void) {
+    return ui->mySettingsStartCheckbox;
 }
 
 void MySettings::on_mySettingsPushButton_clicked()
@@ -26,4 +30,9 @@ void MySettings::on_mySettingsPushButton_clicked()
 void MySettings::on_mySettingsCheckBox_clicked()
 {
     emit settingsDialogRunCheckbox();
+}
+
+void MySettings::on_mySettingsStartCheckbox_clicked()
+{
+    emit settingsDialogStartMinimizedCheckbox();
 }
